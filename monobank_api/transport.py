@@ -1,16 +1,16 @@
 import requests
 from .errors import TooManyRequests, Error
 
-ENDPOINT = 'https://api.monobank.ua'
-USER_AGENT = 'monobank-api (https://github.com/zagran/monobank-api, contact: serhii.z@edicasoft.com)'
+ENDPOINT = "https://api.monobank.ua"
+USER_AGENT = "monobank-api (https://github.com/zagran/monobank-api, contact: serhii.z@edicasoft.com)"
 
 
 def api_request(method, path, **kwargs):
     """
     Handles all HTTP requests for monobank endponts
     """
-    headers = kwargs.pop('headers')
-    headers['User-Agent'] = USER_AGENT
+    headers = kwargs.pop("headers")
+    headers["User-Agent"] = USER_AGENT
     url = ENDPOINT + path
     response = requests.request(method, url, headers=headers, **kwargs)
 
@@ -23,5 +23,5 @@ def api_request(method, path, **kwargs):
         raise TooManyRequests("Too many requests", response)
 
     data = response.json()
-    message = data.get('errorDescription', str(data))
+    message = data.get("errorDescription", str(data))
     raise Error(message, response)

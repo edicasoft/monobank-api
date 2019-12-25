@@ -16,7 +16,9 @@ class SignKey(object):
 
     def get_key_id(self):
         """Get unique Monobank identifier (X-Key-Id)"""
-        uncompressed_public_key = bytearray([0x04]) + (bytearray(self._public_key.to_string()))
+        uncompressed_public_key = bytearray([0x04]) + (
+            bytearray(self._public_key.to_string())
+        )
         return binascii.hexlify(hashlib.sha256(uncompressed_public_key).digest())
 
     def sign(self, data):
@@ -29,11 +31,11 @@ class SignKey(object):
         return base64.b64encode(sign)
 
     def _load_private_key(self, private_key):
-        if 'PRIVATE KEY-----' in private_key:
+        if "PRIVATE KEY-----" in private_key:
             raw = self.private_key
         elif os.path.exists(private_key):
             with open(private_key) as f:
                 raw = f.read()
         else:
-            raise Exception('Cannot load private key')
+            raise Exception("Cannot load private key")
         return ecdsa.SigningKey.from_pem(raw)
